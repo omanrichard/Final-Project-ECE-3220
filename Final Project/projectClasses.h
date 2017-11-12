@@ -1,5 +1,5 @@
 //
-//  Header.h
+//  projectClasses.h
 //  Final Project
 //  Created by Richard Oman on 11/11/17.
 //  Copyright © 2017 Richard Oman. All rights reserved.
@@ -115,4 +115,4 @@ void signal::saveFile( string filename ){
     return;
 }
 
-#endif /* Header_h */
+#endif /* projectClasses.h */
