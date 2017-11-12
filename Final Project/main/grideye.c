@@ -5,7 +5,6 @@
 //Provides communication to the Panasonic Grid-EYE using the
 //Atmel Software Framework. 
 //
-//Requires the use of ASF Two-wire Master Interface Driver.
 */
 #include "grideye.h"
 
@@ -114,7 +113,8 @@ bool ge_writePacket(GridEye *ge, uint8_t addr, uint8_t datalength, void* data)
 {
 	//setup write packet and send
 	ge_setupPacket(ge, addr, datalength, data);
-	return twi_master_write(ge->twim_loc, &ge->packet) == STATUS_OK;
+//	return twi_master_write(ge->twim_loc, &ge->packet) == STATUS_OK;
+    return I2C.write[/*byte value*/] == STATUS_OK;
 }
 
 bool ge_readPacket(GridEye *ge, uint8_t addr, uint8_t datalength, void* data)
