@@ -57,11 +57,11 @@ public void setup() {
 
 public void draw() {
   
-  background(currentColor);
-  stroke(255);
   
-splashScreen();
-liveStream();
+  
+  
+//splashScreen();
+//liveStream();
 
 updateBlock(i,j,count);
 i++;
