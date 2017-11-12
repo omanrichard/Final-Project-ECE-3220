@@ -1,13 +1,26 @@
-import processing.io.*;
-I2C i2c;
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class main extends PApplet {
 
 int rectX, rectY;      // Position of square button
 int circleX, circleY;  // Position of circle button
 int rectSize = 90;     // Diameter of rect
 int circleSize = 93;   // Diameter of circle
-color rectColor, circleColor, baseColor;
-color rectHighlight, circleHighlight;
-color currentColor;
+int rectColor, circleColor, baseColor;
+int rectHighlight, circleHighlight;
+int currentColor;
 
 /*
 1 = SplashScreen
@@ -25,8 +38,8 @@ int count = 0;
 int j = 0;
 int i = 0;
 
-void setup() {
-  size(700, 700);
+public void setup() {
+  
   rectColor = color(0);
   rectHighlight = color(51);
   circleColor = color(255);
@@ -42,7 +55,7 @@ void setup() {
 }
 
 
-void draw() {
+public void draw() {
   
   
   
@@ -70,7 +83,7 @@ if (i > 9){
 
 }
 
- void updateDisplay(){
+ public void updateDisplay(){
    for(int i = 0; i < 8; i++){
       for(int j = 0; j < 8; j++){
         //updateBlock(i,j,frame.access(i,j));
@@ -80,7 +93,7 @@ if (i > 9){
 
 
 
-void updateBlock(int row, int col, int temperatureValue){
+public void updateBlock(int row, int col, int temperatureValue){
     if(row < 8 && col < 8){//only draw within 8x8 grid
     int colorMask = temperatureValue;
     
@@ -145,7 +158,7 @@ void updateBlock(int row, int col, int temperatureValue){
 }
 }
 
-void splashScreen(){
+public void splashScreen(){
   textSize(32);
   fill(0, 102, 153);
   text("ECE 3220: Thermal Camera", 10, 30);
@@ -153,7 +166,7 @@ void splashScreen(){
   
 }
 
-int liveStream(){ //Each square displayScalexdisplayScale pixels, line width 1 pixel.
+public int liveStream(){ //Each square displayScalexdisplayScale pixels, line width 1 pixel.
   //Draw Header
   textSize(32);//Text Size
   fill(0,0,0);//Text Color
@@ -206,3 +219,13 @@ int liveStream(){ //Each square displayScalexdisplayScale pixels, line width 1 p
   
   
  
+  public void settings() {  size(700, 700); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "main" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}

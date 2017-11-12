@@ -1,6 +1,3 @@
-import processing.io.*;
-I2C i2c;
-
 int rectX, rectY;      // Position of square button
 int circleX, circleY;  // Position of circle button
 int rectSize = 90;     // Diameter of rect
