@@ -10,7 +10,7 @@
 #include <vector>
 #include <string>
 
-#define gridEyeAddr 0x68 // or 0x669 Address
+#define gridEyeAddr 0x68 // or 0x69 Address
 
 #ifndef projectClasses_h
 #define projectClasses_h
@@ -18,30 +18,30 @@
 using namespace std;
 int i,j;
 
-//----------- Frame Class ----------------
+class I2C{
+private:
+    
+public:
+    short read( int temp);
+    void write( int temp);
+    void endTransmission();
+    void beginTransmission( int temp );
+    void close();
+};
 
+//----------- Frame Class ----------------
 class frame{
     friend class signal;
     
 private:
-    short sensor_table[8][8];       // Stores row of sensor data
-    
-    /*    0  1  2  3  4  5  6  7
-     0  [] [] [] [] [] [] [] []
-     1  [] [] [] [] [] [] [] []
-     3  [] [] [] [] [] [] [] []
-     3  [] [] [] [] [] [] [] []
-     4  [] [] [] [] [] [] [] []
-     5  [] [] [] [] [] [] [] []
-     6  [] [] [] [] [] [] [] []
-     7  [] [] [] [] [] [] [] [] */
-    void collect_data();
+    short sensor_values[64];       // Stores sensor data
     
 public:
     frame();
+    frame(I2C i2c);
     ~frame();
     
-    short access( short row, short col );
+    short access( short row );
     virtual void display_frame();                  // Transmitting current values frame
     
 };
@@ -49,8 +49,7 @@ public:
 class frame_mask : public frame {
 private:
     vector< string > scale;
-    
-    string mask[8][8];
+    string mask[64];
     
 public:
     frame_mask();
@@ -65,7 +64,7 @@ class signal{
 private:
     vector< frame > data;
     short frameCount;
-    byte f_r;
+    
     
     
 public:
