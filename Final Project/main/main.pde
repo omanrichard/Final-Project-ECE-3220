@@ -9,7 +9,8 @@ color currentColor;
 /*
 1 = SplashScreen
 2 = live data
-3 = 
+3 = Settings
+*/
 int currentWindow; 
 
 //Top left corner of data Array window
@@ -17,6 +18,7 @@ int currentWindow;
 int displayX = 70;
 int displayY = 40;
 int displayScale = 50;
+int count = 0;
 
 void setup() {
   size(700, 700);
@@ -31,36 +33,27 @@ void setup() {
   rectX = width/2-rectSize-10;
   rectY = height/2-rectSize/2;
   ellipseMode(CENTER);
+  
 }
+
 
 void draw() {
   
   background(currentColor);
   stroke(255);
   
-  splashScreen();
-  
-  //Each square displayScalexdisplayScale pixels, line width 1 pixel.
-  strokeWeight(1);//Line width 1 Pixel
-  //Draw Boarder
-  line(displayX,displayY,displayX+displayScale*8+8,displayY);//Top
-  line(displayX,displayY,displayX,displayY+displayScale*8+8);//left Side
-  line(displayX,displayY+displayScale*8+8,displayX+displayScale*8+8,displayY+displayScale*8+8);//Bottom
-  line(displayX+displayScale*8+8,displayY+displayScale*8+8,displayX+displayScale*8+8,displayY);//Right side
-  //Draw grid Lines
-  for(int i = 1; i < 8; i++){
-  line(displayX,displayY+(i*displayScale)+i,displayX+displayScale*8+8,displayY+(i*displayScale)+i);//row
-  line(displayX+(i*displayScale)+i,displayY, displayX+(i*displayScale)+i, displayY+displayScale*8+8);//Column
-  }
-  int count = 0;
+splashScreen();
+liveStream();
  for(int i = 0; i < 8; i++){
    count++;
    for(int j = 0; j < 8; j++){
      updateBlock(j,i,count);
-     
-     if(count == 13) count = 0;
+     count++;
+     if(count == 5) count = 0;
+   
 }
  }
+ count++;
 }
 
  void updateDisplay(){
@@ -146,6 +139,21 @@ void splashScreen(){
   
 }
 
+int liveStream(){ //Each square displayScalexdisplayScale pixels, line width 1 pixel.
+  strokeWeight(1);//Line width 1 Pixel
+  //Draw Boarder
+  line(displayX,displayY,displayX+displayScale*8+8,displayY);//Top
+  line(displayX,displayY,displayX,displayY+displayScale*8+8);//left Side
+  line(displayX,displayY+displayScale*8+8,displayX+displayScale*8+8,displayY+displayScale*8+8);//Bottom
+  line(displayX+displayScale*8+8,displayY+displayScale*8+8,displayX+displayScale*8+8,displayY);//Right side
+  //Draw grid Lines
+  for(int i = 1; i < 8; i++){
+  line(displayX,displayY+(i*displayScale)+i,displayX+displayScale*8+8,displayY+(i*displayScale)+i);//row
+  line(displayX+(i*displayScale)+i,displayY, displayX+(i*displayScale)+i, displayY+displayScale*8+8);//Column
+  }
+
+ return 1;
+}
   
   
   
