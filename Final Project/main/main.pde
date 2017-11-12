@@ -33,11 +33,64 @@ void setup() {
   circleHighlight = color(204);
   baseColor = color(102);
   currentColor = baseColor;
-  circleX = width/2+circleSize/2+10;
-  circleY = height/2;
-  rectX = width/2-rectSize-10;
-  rectY = height/2-rectSize/2;
-  ellipseMode(CENTER);
+  
+  
+  i2c = new I2C(I2C.list()[0]);//Setup device on I2C-1
+  println("Atempting Transmission");
+  i2c.beginTransmission(0x68); //GridEye i2c Address 
+  println("Transmission Begun");
+  /*
+  //Power Control Register
+  i2c.write(0x00); //Command
+  
+  i2c.write(0x00); //Normal Mode
+    println("Power Control Mode: Normal Mode");
+   
+  //Reset Register
+  i2c.write(0x01); //Command
+  i2c.write(0x3F); //Software Reset
+  println("Reset Device");
+  
+  //Frame Rate Register
+  i2c.write(0x02); //Command
+  i2c.write(0x00); //10 frames per second
+  println("Set Frame Rate");
+  
+  //interupt Register
+  i2c.write(0x03); //Command
+  i2c.write(0x00); //Disabled
+  println("Disabled Interupt");
+  
+  //Status Register
+  i2c.write(0x04); //Command
+  i2c.write(0x0E); //Clear Flags
+  println("Cleared Flags");
+  
+  //Read Pixel
+  */
+  
+ 
+  //i2c.beginTransmission(0x68);
+  i2c.write(0x04); //Command
+  byte[] PixelL = i2c.read(1);
+  
+  i2c.beginTransmission(0x68);
+  i2c.write(0x80);
+  byte[] PixelH = i2c.read(1);
+  
+  printArray(PixelL);
+  printArray(PixelH);
+  
+  //i2c.beginTransmission(0x69);
+  println("Reading Pixel");
+
+  
+  
+  i2c.endTransmission();
+   println("Transmission Over");
+   
+   
+
   
 }
 
