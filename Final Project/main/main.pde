@@ -102,20 +102,18 @@ void draw() {
   
 //splashScreen();
 //liveStream();
+count = 0x80;
+for(int i = 0; i < 8; i++){
+  for(int j = 0; j < 8; j++){
+     println("Reading Register:",count);
+    i2c.beginTransmission(0x68);
+ i2c.write(count);
+updateBlock(i,j,i2c.read(1));
+count += 2;
 
-updateBlock(i,j,count);
-i++;
-
-count++;
-
-if (count > 10) count = 0;
-if (i > 9){
-  i = 0;
-  j++;
-  if(j > 9){
-    j = 0;
   }
 }
+if (count > 0xFD) count = 0x80;
 
 
  
@@ -133,64 +131,23 @@ if (i > 9){
 
 
 
-void updateBlock(int row, int col, int temperatureValue){
+void updateBlock(int row, int col, byte[] temperatureValue){
     if(row < 8 && col < 8){//only draw within 8x8 grid
-    int colorMask = temperatureValue;
-    
+    int colorMask = temperatureValue[0] & 127;
+   
     //set fill color based on mask
     //0 cold, 15 hot
-    switch (colorMask){
-      case 0:
-      fill(0,0,0);
-      break;
-       case 1:
-      fill(102,0,102);
-      break;
-     case 2:
-      fill(255,0,255);
-      break;
-     case 3:
-      fill(0,0,153);
-      break;
-     case 4:
-      fill(0,0,255);
-      break;
-     case 5:
-      fill(102,255,204);
-      break;
-     case 6:
-      fill(0,153,51);
-      break;
-     case 7:
-    
-      fill(204,255,51);
-      break;
-     case 8:
-      fill(255,255,0);
-      break;
-     case 9:
-      fill(255,153,51);
-      break;
-     case 10:
-      fill(255,0,0);
-      break;
-     case 11:
-      fill(255,153,153);
-      break;
-     case 12:
-      fill(255,255,255);
-      break;
-     case 13:
-      fill(255,255,255);
-      break;
-     case 14:
-      fill(255,255,255);
-      break;
-     case 15:
-      fill(255,255,255);
-      break;
-    }
-    
+   if(colorMask > 0 && colorMask < 21) fill(0,0,0);
+   if(colorMask > 21 && colorMask < 42) fill(102,0,102);
+   if(colorMask > 42 && colorMask < 63) fill(255,0,255);
+   if(colorMask > 63 && colorMask < 84) fill(0,0,153);
+   if(colorMask > 84 && colorMask < 105) fill(0,0,255);
+   if(colorMask > 105 && colorMask < 126) fill(102,255,204);
+   if(colorMask > 126 && colorMask < 147) fill(0,153,51);
+   if(colorMask > 168 && colorMask < 189) fill(255,255,0);
+   if(colorMask > 189 && colorMask < 210) fill(255,153,51);
+   if(colorMask > 210 && colorMask < 231) fill(255,0,0);
+   if(colorMask > 231 && colorMask < 255) fill(255,153,153);
 
   //draw block
   noStroke(); //No outline
