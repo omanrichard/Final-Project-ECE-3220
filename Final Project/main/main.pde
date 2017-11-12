@@ -18,9 +18,14 @@ int currentWindow;
 
 //Top left corner of data Array window
 //Window is 326x326 pixels
-int displayX = 40;
-int displayY = 100;
-int displayScale = 50;
+
+int displayX = 40; //Left most cordniate grid
+int displayY = 100;//Right most coordniate grid
+int displayScale = 50;//display pixels to be used per physical infrared pixel
+int displayFrameX = displayX;
+int displayFrameY = displayY - displayScale/2;
+
+
 int count = 0;
 int j = 0;
 int i = 0;
@@ -100,8 +105,7 @@ void draw() {
   
   
   
-//splashScreen();
-//liveStream();
+
 count = 0x80;
 for(int i = 0; i < 8; i++){
   for(int j = 0; j < 8; j++){
@@ -152,8 +156,52 @@ void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
     println(colorMask);
     
     
+    //24-bit color 
+    int R1 = 0;
+    int G1 = 0;
+    int B1 = 0;
+    int phase = 1;
+    for(int i = 0; i < 255; i++){
+      if(colorMask >= i && colorMask < i+1){
+        fill(R1,G1,B1);
+      }
+      if(phase == 7){
+          G1 += 7;
+          B1 += 7;
+       
+      }
+      if(phase == 6){
+          G1 -= 7;
+        if(G1 <= 0) phase = 7;
+      }
+        if(phase == 5){
+          R1 += 7;
+          if(R1 >= 252) phase = 6;
+      }
+        if(phase == 4){
+          B1 -= 7;
+          if(B1 <= 0) phase = 5;
+      }
+        if(phase == 3){
+          G1 += 7;
+          if( G1 >= 252) phase = 4;
+      }
+        if(phase == 2){
+          R1 -= 7;
+          if( R1 <= 0) phase = 3;
+      }
+        if(phase == 1){
+           R1 += 7;
+           B1 += 7;
+          if( R1 >= 252) phase = 2;
+      }
+    }
+        
+        
     
     
+    
+  /*  OLD Color Mask
     
     //println(colorMask);
    // int colorMaskH = 
@@ -171,6 +219,8 @@ void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
    if(colorMask > 210 && colorMask < 231) fill(102,0,102);
    if(colorMask > 231 && colorMask < 255) fill(0,0,0);
 
+
+*/
   //draw block
   noStroke(); //No outline
   rect(displayX+displayScale*row+row+1, displayY+displayScale*col+col+1,displayScale,displayScale);
