@@ -34,8 +34,19 @@ class frame{
     friend class signal;
     
 private:
-    short sensor_values[64];       // Stores sensor data
-    
+    short sensor_values[8][8];       // Stores sensor data
+    /*
+     0  1  2  3  4  5  6  7
+     0  [] [] [] [] [] [] [] []
+     1  [] [] [] [] [] [] [] []
+     3  [] [] [] [] [] [] [] []
+     3  [] [] [] [] [] [] [] []
+     4  [] [] [] [] [] [] [] []
+     5  [] [] [] [] [] [] [] []
+     6  [] [] [] [] [] [] [] []
+     7  [] [] [] [] [] [] [] []
+     */
+
 public:
     frame();
     frame(I2C i2c);
