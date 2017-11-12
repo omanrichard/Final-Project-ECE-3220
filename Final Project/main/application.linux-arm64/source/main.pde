@@ -15,10 +15,12 @@ int currentWindow;
 
 //Top left corner of data Array window
 //Window is 326x326 pixels
-int displayX = 70;
-int displayY = 40;
+int displayX = 40;
+int displayY = 100;
 int displayScale = 50;
 int count = 0;
+int j = 0;
+int i = 0;
 
 void setup() {
   size(700, 700);
@@ -44,16 +46,25 @@ void draw() {
   
 splashScreen();
 liveStream();
- for(int i = 0; i < 8; i++){
-   count++;
-   for(int j = 0; j < 8; j++){
-     updateBlock(j,i,count);
 
-     if(count > 5) count = 0;
-   
+updateBlock(i,j,count);
+i++;
+
+count++;
+
+if (count > 10) count = 0;
+if (i > 9){
+  i = 0;
+  j++;
+  if(j > 9){
+    j = 0;
+  }
 }
- }
- count++;
+
+
+ 
+
+
 }
 
  void updateDisplay(){
@@ -140,8 +151,20 @@ void splashScreen(){
 }
 
 int liveStream(){ //Each square displayScalexdisplayScale pixels, line width 1 pixel.
-  strokeWeight(1);//Line width 1 Pixel
+  //Draw Header
+  textSize(32);//Text Size
+  fill(0,0,0);//Text Color
+  text("Live View", 10, 30);
+  textSize(16);
+  text("Sensor Status:", 10,70);
+  fill(255,0,0);
+  text("Disconnected",110,70);
+  stroke(204, 102, 0);
+  line(0,90,700,90);
+  
   //Draw Boarder
+  fill(255,255,255);
+  strokeWeight(1);//Line width 1 Pixel
   line(displayX,displayY,displayX+displayScale*8+8,displayY);//Top
   line(displayX,displayY,displayX,displayY+displayScale*8+8);//left Side
   line(displayX,displayY+displayScale*8+8,displayX+displayScale*8+8,displayY+displayScale*8+8);//Bottom
