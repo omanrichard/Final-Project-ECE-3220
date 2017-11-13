@@ -26,33 +26,23 @@ public:
     void close();
 };
 
-//----------- Frame Class ----------------
-class frame{
-    friend class signal;
-    
-private:
-    float mean;
-    short max;
-    short sensor_values[8][8];      // Stores sensor data
-                                    /*   0  1  2  3  4  5  6  7
-                                     0  [] [] [] [] [] [] [] []
-                                     1  [] [] [] [] [] [] [] []
-                                     3  [] [] [] [] [] [] [] []
-                                     3  [] [] [] [] [] [] [] []
-                                     4  [] [] [] [] [] [] [] []
-                                     5  [] [] [] [] [] [] [] []
-                                     6  [] [] [] [] [] [] [] []
-                                     7  [] [] [] [] [] [] [] []
-                                    */
-    void set_max();
-    void set_mean();
-    
+//--------------------- Frame Class -------------------------
+class frame{                        //      Stores sensor data
+friend class signal;                //     0  1  2  3  4  5  6  7
+private:                            // 0  [] [] [] [] [] [] [] []
+    float mean;                     // 1  [] [] [] [] [] [] [] []
+    short max;                      // 3  [] [] [] [] [] [] [] []
+    short sensor_values[8][8];      // 4  [] [] [] [] [] [] [] []
+                                    // 4  [] [] [] [] [] [] [] []
+    void set_max();                 // 5  [] [] [] [] [] [] [] []
+    void set_mean();                // 6  [] [] [] [] [] [] [] []
+                                    // 7  [] [] [] [] [] [] [] []
 public:
     frame();
     frame(I2C i2c);
     ~frame();
     
-    short access( short row , short col );
+    short access( short row , short col );         
     virtual void display_frame();                  // Transmitting current values frame
     
 };
@@ -69,8 +59,9 @@ public:
     void display_frame();
     void set_mask();
 };
+// -------------------- End Frame Class -------------------------
 
-// ---------- Signal Class ----------------
+// -------------------- Signal Class ----------------
 class signal{
 private:
     short frameCount;
@@ -80,11 +71,23 @@ public:
     signal();
     ~signal();
     
-    void transform( char opCode );
     void saveSignal( string filename );
-    void appendSig( string filename );
+    
+    virtual void print();
 };
 
+
+// -------- Session Class ----------
+class session : public signal{
+private:
+    vector< signal* > currentSession;
+    
+public:
+    session();
+    ~session();
+    
+    void print();
+};
 
 #endif /* projectClasses_h */
 

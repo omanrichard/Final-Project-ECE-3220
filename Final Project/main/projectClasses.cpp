@@ -18,8 +18,8 @@
 
 using namespace std;
 int i,j,k;
-/* ------------- frame Methods ------------- */
-//------- frame constructor -------
+
+
 frame::frame(){
     for( i=0 ; i<8 ; i++ ){
         for( j=0 ; j<8 ;  j++){
@@ -43,16 +43,36 @@ frame::frame(I2C i2c){
 }
 
 void frame::display_frame(){
+    frame* temp = this;
     
+    for( j=0 ; j < 8 ; j++){                                        // Frame No. : 1
+        cout << "\t"                                    // TAB [ 1] [ 2] [ 3] [ 4] [ 5] [ 6] [ 7] [ 8
+        << "[ " << temp->sensor_values[j][0] << " ] "   // TAB [ 9] [10] [11] [12] [13] [14] [15] [16]
+        << "[ " << temp->sensor_values[j][1] << " ] "   // TAB [17] [18] [19] [20] [21] [22] [23] [24]
+        << "[ " << temp->sensor_values[j][2] << " ] "   // TAB [25] [26] [27] [28] [29] [30] [31] [32]
+        << "[ " << temp->sensor_values[j][3] << " ] "   // TAB [33] [34] [35] [36] [37] [38] [39] [40]
+        << "[ " << temp->sensor_values[j][4] << " ] "   // TAB [41] [42] [43] [44] [45] [46] [47] [48]
+        << "[ " << temp->sensor_values[j][5] << " ] "   // TAB [49] [50] [51] [52] [53] [54] [55] [56]
+        << "[ " << temp->sensor_values[j][6] << " ] "   // TAB [57] [58] [59] [60] [61] [62] [63] [64]
+        << "[ " << temp->sensor_values[j][7] << " ] " << endl;
+    }
 }
 
 short frame::access( short row , short col ){
-    return this->sensor_values[row][col];    //Accesses data point in data array
-}
+        return this->sensor_values[row][col];    //Accesses data point in data array
+    }
+
+
+/* ------------- frame Methods ------------- */
+//------- frame constructor -------
 
 //------- frame destructor --------
 frame::~frame(){
 }
+
+//------- maskFrame Methods -------
+
+
 /* ----------- signal Methods -------------*/
 signal::signal(){
     I2C i2c;
@@ -85,7 +105,7 @@ void signal::saveSignal( string filename ){
                           << "[" << temp->sensor_values[j][4] << "] "   // TAB [41] [42] [43] [44] [45] [46] [47] [48]
                           << "[" << temp->sensor_values[j][5] << "] "   // TAB [49] [50] [51] [52] [53] [54] [55] [56]
                           << "[" << temp->sensor_values[j][6] << "] "   // TAB [57] [58] [59] [60] [61] [62] [63] [64]
-                          << "[" << temp->sensor_values[j][7] << "] " <<endl;
+                          << "[" << temp->sensor_values[j][7] << "] " << endl;
         }
     }
     newOutput.close( ); // Close file
@@ -96,3 +116,7 @@ void appendSig( string filename ){
     
 }
 
+    int main( void ){
+        cout << "I don't know what is happening..." << endl;
+        return 0;
+    }
