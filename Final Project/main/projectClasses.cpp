@@ -15,7 +15,7 @@
 //import processing.io.*;
 
 using namespace std;
-
+int i,j,k;
 /* ------------- frame Methods ------------- */
 //------- frame constructor -------
 frame::frame(){
@@ -56,10 +56,11 @@ frame::~frame(){
 /* ----------- signal Methods -------------*/
 signal::signal(){
     I2C i2c;
+    frame* temp;
     
     for( i=0 ; i<frameCount ; i++){
-        frame newFrame( I2C );
-        data.push_back( newFrame );
+        temp = new frame( i2c );
+        this->data.push_back( temp );
     }
 }
 
@@ -67,12 +68,33 @@ void signal::saveFile( string filename ){
     fstream newOutput;  // Creates/Opens new output file
     newOutput.open( filename, ios::out );
     
+    frame* temp;
+
     newOutput << "Number of frames: " << frameCount << " " << endl;    // Copies data from memory to file
     for( i = 0; i < frameCount; i++ ){
-        for( j=0 ; j < 64 ; )
-        newOutput << this->data[i][j] << endl;
+        newOutput << "Frame No. : " << i << endl;
+        temp = this->data[i];
+                                                                        // Example Output
+        for( j=0 ; j < 8 ; j++){                                        // Frame No. : 1
+                newOutput << "\t ["                                     // TAB [ 1] [ 2] [ 3] [ 4] [ 5] [ 6] [ 7] [ 8]
+                          << temp->sensor_values[j][0] << "] "          // TAB [ 9] [10] [11] [12] [13] [14] [15] [16]
+                          << "[" << temp->sensor_values[j][1] << "] "   // TAB [17] [18] [19] [20] [21] [22] [23] [24]
+                          << "[" << temp->sensor_values[j][2] << "] "   // TAB [25] [26] [27] [28] [29] [30] [31] [32]
+                          << "[" << temp->sensor_values[j][3] << "] "   // TAB [33] [34] [35] [36] [37] [38] [39] [40]
+                          << "[" << temp->sensor_values[j][4] << "] "   // TAB [41] [42] [43] [44] [45] [46] [47] [48]
+                          << "[" << temp->sensor_values[j][5] << "] "   // TAB [49] [50] [51] [52] [53] [54] [55] [56]
+                          << "[" << temp->sensor_values[j][6] << "] "   // TAB [57] [58] [59] [60] [61] [62] [63] [64]
+                          << "[" << temp->sensor_values[j][7] << "] " <<endl;
+        }
     }
     newOutput.close( ); // Close file
     return;
+}
+
+void transform( char opCode ){
+    
+}
+void appendSig( string filename ){
+    
 }
 

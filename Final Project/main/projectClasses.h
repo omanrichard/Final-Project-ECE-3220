@@ -16,7 +16,6 @@
 #define projectClasses_h
 
 using namespace std;
-int i,j;
 
 class I2C{
 private:
@@ -34,25 +33,28 @@ class frame{
     friend class signal;
     
 private:
-    short sensor_values[8][8];       // Stores sensor data
-    /*
-     0  1  2  3  4  5  6  7
-     0  [] [] [] [] [] [] [] []
-     1  [] [] [] [] [] [] [] []
-     3  [] [] [] [] [] [] [] []
-     3  [] [] [] [] [] [] [] []
-     4  [] [] [] [] [] [] [] []
-     5  [] [] [] [] [] [] [] []
-     6  [] [] [] [] [] [] [] []
-     7  [] [] [] [] [] [] [] []
-     */
-
+    float mean;
+    short max;
+    short sensor_values[8][8];      // Stores sensor data
+                                    /*   0  1  2  3  4  5  6  7
+                                     0  [] [] [] [] [] [] [] []
+                                     1  [] [] [] [] [] [] [] []
+                                     3  [] [] [] [] [] [] [] []
+                                     3  [] [] [] [] [] [] [] []
+                                     4  [] [] [] [] [] [] [] []
+                                     5  [] [] [] [] [] [] [] []
+                                     6  [] [] [] [] [] [] [] []
+                                     7  [] [] [] [] [] [] [] []
+                                    */
+    void set_max();
+    void set_mean();
+    
 public:
     frame();
     frame(I2C i2c);
     ~frame();
     
-    short access( short row );
+    short access( short row , short col );
     virtual void display_frame();                  // Transmitting current values frame
     
 };
@@ -60,7 +62,7 @@ public:
 class frame_mask : public frame {
 private:
     vector< string > scale;
-    string mask[64];
+    string mask[8][8];
     
 public:
     frame_mask();
@@ -73,10 +75,8 @@ public:
 // ---------- Signal Class ----------------
 class signal{
 private:
-    vector< frame > data;
     short frameCount;
-    
-    
+    vector< frame* > data;
     
 public:
     signal();
