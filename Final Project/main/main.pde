@@ -43,37 +43,8 @@ void setup() {
   println("Atempting Transmission");
   i2c.beginTransmission(0x68); //GridEye i2c Address 
   println("Transmission Begun");
-  /*
-  //Power Control Register
-  i2c.write(0x00); //Command
+
   
-  i2c.write(0x00); //Normal Mode
-    println("Power Control Mode: Normal Mode");
-   
-  //Reset Register
-  i2c.write(0x01); //Command
-  i2c.write(0x3F); //Software Reset
-  println("Reset Device");
-  
-  //Frame Rate Register
-  i2c.write(0x02); //Command
-  i2c.write(0x00); //10 frames per second
-  println("Set Frame Rate");
-  
-  //interupt Register
-  i2c.write(0x03); //Command
-  i2c.write(0x00); //Disabled
-  println("Disabled Interupt");
-  
-  //Status Register
-  i2c.write(0x04); //Command
-  i2c.write(0x0E); //Clear Flags
-  println("Cleared Flags");
-  
-  //Read Pixel
-  */
-  
- 
   //i2c.beginTransmission(0x68);
   i2c.write(0x04); //Command
   byte[] PixelL = i2c.read(1);
@@ -88,14 +59,10 @@ void setup() {
   //i2c.beginTransmission(0x69);
   println("Reading Pixel");
 
-  
-  
   i2c.endTransmission();
    println("Transmission Over");
    
-   
-
-  
+    
 }
 // ----------- End Setup ---------------
 
@@ -122,6 +89,7 @@ void draw() {
     }
   }
 }
+// ----------- End Draw -----------------
 
 void updateDisplay(){
    for(int i = 0; i < 8; i++){
@@ -131,13 +99,10 @@ void updateDisplay(){
    }
 }
 
-
-
 void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
   //only draw within 8x8 grid  
   if(row < 8 && col < 8){
     
-   //int colorMask = a & b;
     int signHold = tempValueL & 128;
     int colorMask = tempValueL & 127;
     colorMask += signHold;
@@ -145,7 +110,7 @@ void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
     println(colorMask);
     
     
-    //24-bit color 
+ //24-bit color 
     int R1 = 0;
     int G1 = 0;
     int B1 = 0;

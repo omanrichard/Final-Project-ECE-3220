@@ -26,9 +26,9 @@ public:
     void close();
 };
 
-//--------------------- Frame Class -------------------------
+//------------------------ Frame Class -------------------------
 class frame{                        //      Stores sensor data
-friend class signal;                //     0  1  2  3  4  5  6  7
+friend class session;               //     0  1  2  3  4  5  6  7
 private:                            // 0  [] [] [] [] [] [] [] []
     float mean;                     // 1  [] [] [] [] [] [] [] []
     short max;                      // 3  [] [] [] [] [] [] [] []
@@ -42,9 +42,13 @@ public:
     frame(I2C i2c);
     ~frame();
     
-    short access( short row , short col );         
-    virtual void display_frame();                  // Transmitting current values frame
+    short access( short row , short col );
+    short get_max();
+    float get_mean();
     
+    virtual void print();                  
+    void get_data( I2C i2c );
+
 };
 
 class frame_mask : public frame {
@@ -56,13 +60,14 @@ public:
     frame_mask();
     ~frame_mask();
     
-    void display_frame();
+    void print();
     void set_mask();
+    
 };
-// -------------------- End Frame Class -------------------------
+//------------------------ End Frame Class -------------------------
 
-// -------------------- Signal Class ----------------
-class signal{
+//------------------------ Signal Class -------------------------
+class signal : public frame{
 private:
     short frameCount;
     vector< frame* > data;
@@ -72,15 +77,14 @@ public:
     ~signal();
     
     void saveSignal( string filename );
-    
-    virtual void print();
+    void print();
 };
+//------------------------ End Signal Class -------------------------
 
-
-// -------- Session Class ----------
-class session : public signal{
+//------------------------ Session Class -------------------------
+class session{
 private:
-    vector< signal* > currentSession;
+    vector< class signal* > currentSession;
     
 public:
     session();
