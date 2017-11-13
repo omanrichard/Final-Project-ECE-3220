@@ -10,8 +10,6 @@
 #include <vector>
 #include <string>
 
-#define gridEyeAddr 0x68 // or 0x69 Address
-
 #ifndef projectClasses_h
 #define projectClasses_h
 
@@ -83,7 +81,7 @@ public:
     ~signal();
     
     void transform( char opCode );
-    void saveFile( string filename );
+    void saveSignal( string filename );
     void appendSig( string filename );
 };
 

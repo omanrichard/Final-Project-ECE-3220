@@ -14,14 +14,12 @@ color currentColor;
 2 = live data
 3 = Settings
 */
-int currentWindow; 
 
-//Top left corner of data Array window
-//Window is 326x326 pixels
-
-int displayX = 40; //Left most cordniate grid
-int displayY = 100;//Right most coordniate grid
-int displayScale = 50;//display pixels to be used per physical infrared pixel
+int currentWindow;         //Top left corner of data Array window
+                           //Window is 326x326 pixels
+int displayX = 40;         //Left most cordniate grid
+int displayY = 100;        //Right most coordniate grid
+int displayScale = 50;     //display pixels to be used per physical infrared pixel
 int displayFrameX = displayX;
 int displayFrameY = displayY - displayScale/2;
 
@@ -30,6 +28,7 @@ int count = 0;
 int j = 0;
 int i = 0;
 
+// ----------- Start Setup ---------------
 void setup() {
   size(700, 700);
   rectColor = color(0);
@@ -98,41 +97,33 @@ void setup() {
 
   
 }
+// ----------- End Setup ---------------
 
-
+// ----------- Start Draw --------------
 void draw() {
-  
-  
-  
-  
 
-count = 0x80;
-for(int i = 0; i < 8; i++){
-  for(int j = 0; j < 8; j++){
-     //println("Reading Register:",count);
+  count = 0x80;
+  for(int i = 0; i < 8; i++){
+    for(int j = 0; j < 8; j++){
+      //println("Reading Register:",count);
+   
+      i2c.beginTransmission(0x68);
+      i2c.write(count);
+      byte[] lowData = i2c.read(1);
     
-    i2c.beginTransmission(0x68);
-     i2c.write(count);
- byte[] lowData = i2c.read(1);
+      i2c.beginTransmission(0x68);
+      i2c.write(count+1);
+      byte[] highData = i2c.read(1);
+ 
+      updateBlock(i,j,lowData[0],highData[0]);
+      count += 2;
     
-    i2c.beginTransmission(0x68);
-   i2c.write(count+1);
- byte[] highData = i2c.read(1);
-
-updateBlock(i,j,lowData[0],highData[0]);
-count += 2;
-if (count > 0xFD) count = 0x80;
+      if (count > 0xFD) count = 0x80;
+    }
   }
 }
 
-
-
- 
-
-
-}
-
- void updateDisplay(){
+void updateDisplay(){
    for(int i = 0; i < 8; i++){
       for(int j = 0; j < 8; j++){
         //updateBlock(i,j,frame.access(i,j));
@@ -143,16 +134,14 @@ if (count > 0xFD) count = 0x80;
 
 
 void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
-    if(row < 8 && col < 8){//only draw within 8x8 grid
+  //only draw within 8x8 grid  
+  if(row < 8 && col < 8){
     
-    //int a = (tempValueH & 7) << 4; // 0000 0111 => 0111 0000 
-   // int b = (tempValueL & 127) >> 4; // 1111 0000 => 0000 1111
-    
-    //int colorMask = a & b;
-   int signHold = tempValueL & 128;
-   int colorMask = tempValueL & 127;
-   colorMask += signHold;
-    
+   //int colorMask = a & b;
+    int signHold = tempValueL & 128;
+    int colorMask = tempValueL & 127;
+    colorMask += signHold;
+  
     println(colorMask);
     
     
@@ -161,52 +150,55 @@ void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
     int G1 = 0;
     int B1 = 0;
     int phase = 1;
+  
     for(int i = 0; i < 255; i++){
       if(colorMask >= i && colorMask < i+1){
-        fill(R1,G1,B1);
+          fill(R1,G1,B1);
       }
+    
       if(phase == 7){
           G1 += 7;
           B1 += 7;
-       
       }
+    
       if(phase == 6){
           G1 -= 7;
-        if(G1 <= 0) phase = 7;
+          if(G1 <= 0) phase = 7;
       }
-        if(phase == 5){
+    
+      if(phase == 5){
           R1 += 7;
           if(R1 >= 252) phase = 6;
       }
-        if(phase == 4){
+     
+      if(phase == 4){
           B1 -= 7;
           if(B1 <= 0) phase = 5;
       }
-        if(phase == 3){
+    
+      if(phase == 3){
           G1 += 7;
           if( G1 >= 252) phase = 4;
       }
-        if(phase == 2){
+    
+      if(phase == 2){
           R1 -= 7;
           if( R1 <= 0) phase = 3;
       }
-        if(phase == 1){
+     
+      if(phase == 1){
            R1 += 7;
            B1 += 7;
-          if( R1 >= 252) phase = 2;
+           if( R1 >= 252) phase = 2;
       }
-    }
+    } // end for
         
-        
+/* OLD Color Mask
     
-    
-    
-  /*  OLD Color Mask
-    
-    //println(colorMask);
+   //println(colorMask);
    // int colorMaskH = 
-    //set fill color based on mask
-    //0 cold, 15 hot
+   //set fill color based on mask
+   //0 cold, 15 hot
    if(colorMask >= 0 && colorMask < 21) fill(255,153,153);
    if(colorMask > 21 && colorMask < 42) fill(255,0,0);
    if(colorMask > 42 && colorMask < 63) fill(255,153,51);
@@ -218,13 +210,11 @@ void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
    if(colorMask > 189 && colorMask < 210) fill(255,0,255);
    if(colorMask > 210 && colorMask < 231) fill(102,0,102);
    if(colorMask > 231 && colorMask < 255) fill(0,0,0);
-
-
 */
   //draw block
-  noStroke(); //No outline
-  rect(displayX+displayScale*row+row+1, displayY+displayScale*col+col+1,displayScale,displayScale);
-}
+    noStroke(); //No outline
+    rect(displayX+displayScale*row+row+1, displayY+displayScale*col+col+1,displayScale,displayScale);
+  }
 }
 
 void splashScreen(){
@@ -247,7 +237,7 @@ int liveStream(){ //Each square displayScalexdisplayScale pixels, line width 1 p
   stroke(204, 102, 0);
   line(0,90,700,90);
   
-  //Draw Boarder
+  //Draw Border
   fill(255,255,255);
   strokeWeight(1);//Line width 1 Pixel
   line(displayX,displayY,displayX+displayScale*8+8,displayY);//Top

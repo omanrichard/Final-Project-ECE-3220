@@ -12,6 +12,8 @@
 #include <string>
 #include "projectClasses.h"
 
+#define gridEyeAddr 0x68 // or 0x69 Address
+
 //import processing.io.*;
 
 using namespace std;
@@ -28,14 +30,13 @@ frame::frame(){
 }
 
 frame::frame(I2C i2c){
-    int count = 0x80;
+    int count = 0x80;   // First Pixel
     for( i=0 ; i < 64 ; i++ ){
         for( j=0 ; j<8 ;  j++){
-            i2c.beginTransmission(0x68);
-            // Thermistor Register
-            i2c.write( count );        // Command
-            this->sensor_values[i][j] = i2c.read(0x68);
-            count += 2;
+            i2c.beginTransmission(gridEyeAddr);                 // Start transmission
+            i2c.write( count );                                 // Command
+            this->sensor_values[i][j] = i2c.read(gridEyeAddr);  // Receive value from device, end transmission
+            count += 2;                                         // Increments to next pixel
         }
     }
     return;
@@ -46,8 +47,7 @@ void frame::display_frame(){
 }
 
 short frame::access( short row , short col ){
-    short temp = this->sensor_values[row][col];    //Accesses data point in data array
-    return temp;
+    return this->sensor_values[row][col];    //Accesses data point in data array
 }
 
 //------- frame destructor --------
@@ -62,9 +62,10 @@ signal::signal(){
         temp = new frame( i2c );
         this->data.push_back( temp );
     }
+    return;
 }
 
-void signal::saveFile( string filename ){
+void signal::saveSignal( string filename ){
     fstream newOutput;  // Creates/Opens new output file
     newOutput.open( filename, ios::out );
     
@@ -91,9 +92,6 @@ void signal::saveFile( string filename ){
     return;
 }
 
-void transform( char opCode ){
-    
-}
 void appendSig( string filename ){
     
 }
