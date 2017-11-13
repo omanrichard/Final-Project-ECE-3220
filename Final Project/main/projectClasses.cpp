@@ -45,8 +45,8 @@ void frame::display_frame(){
     
 }
 
-short frame::access( short row ){
-    short temp = this->sensor_values[row];    //Accesses data point in data array
+short frame::access( short row , short col ){
+    short temp = this->sensor_values[row][col];    //Accesses data point in data array
     return temp;
 }
 
