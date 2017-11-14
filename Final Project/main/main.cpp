@@ -5,7 +5,7 @@
 //  Created by Grant Hilgert & Richard Oman on 11/13/17.
 //  Copyright © 2017 Richard Oman. All rights reserved.
 //
-
+#include <sfml>
 #include <iostream>
 #include <fstream>
 #include <vector>

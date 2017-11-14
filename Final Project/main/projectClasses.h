@@ -69,8 +69,8 @@ public:
 //------------------------ Signal Class -------------------------
 class signal : public frame{
 private:
-    short frameCount;
-    vector< frame* > data;
+    short frameCount;   // 10 Frames -> 1 Second
+    vector< frame* > data;  // Storing up to 31,800 frames maximum
     
 public:
     signal();
