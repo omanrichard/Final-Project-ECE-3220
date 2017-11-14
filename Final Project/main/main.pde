@@ -1,13 +1,7 @@
 import processing.io.*;
 I2C i2c;
 
-int rectX, rectY;      // Position of square button
-int circleX, circleY;  // Position of circle button
-int rectSize = 90;     // Diameter of rect
-int circleSize = 93;   // Diameter of circle
-color rectColor, circleColor, baseColor;
-color rectHighlight, circleHighlight;
-color currentColor;
+
 
 /*
 1 = SplashScreen
@@ -31,13 +25,7 @@ int i = 0;
 // ----------- Start Setup ---------------
 void setup() {
   size(700, 700);
-  rectColor = color(0);
-  rectHighlight = color(51);
-  circleColor = color(255);
-  circleHighlight = color(204);
-  baseColor = color(102);
-  currentColor = baseColor;
-  
+
   
   i2c = new I2C(I2C.list()[0]);//Setup device on I2C-1
   println("Atempting Transmission");
