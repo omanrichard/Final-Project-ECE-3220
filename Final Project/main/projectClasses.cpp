@@ -24,7 +24,7 @@ int i,j,k;
 frame::frame(){
     for( i=0 ; i<8 ; i++ ){
         for( j=0 ; j<8 ;  j++){
-            this->sensor_values[i][j] = -10;
+            this->sensor_values[i][j] = 0;
         }
     }
     this->mean = 0;

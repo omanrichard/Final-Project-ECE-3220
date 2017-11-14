@@ -109,8 +109,7 @@ void updateBlock(int row, int col, byte tempValueL, byte tempValueH){
   
     println(colorMask);
     
-    
- //24-bit color 
+//------------- 24-bit color ----------------
     int R1 = 0;
     int G1 = 0;
     int B1 = 0;
